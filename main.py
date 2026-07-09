@@ -1,23 +1,101 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.responses import HTMLResponse
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, func
+from sqlalchemy.orm import declarative_base, sessionmaker, Session
 from pathlib import Path
 import uvicorn
+from datetime import datetime
 
-app = FastAPI(title="Flappy Bird Clone Server")
+# --- Database Configuration ---
+SQLALCHEMY_DATABASE_URL = "sqlite:///./flappybird.db"
+engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
 
-# Define the path to the frontend HTML file
-html_file = Path(__file__).parent / "index.html"
+# --- SQLAlchemy Models ---
+class User(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, index=True)
+
+class Score(Base):
+    __tablename__ = "scores"
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, index=True)
+    score = Column(Integer)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+Base.metadata.create_all(bind=engine)
+
+# --- Dependencies ---
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+security = HTTPBasic()
+
+def get_current_user(
+    credentials: HTTPBasicCredentials = Depends(security), 
+    db: Session = Depends(get_db)
+):
+    """
+    Relaxed Basic Auth: Validates the username via Basic Auth headers.
+    The password is not strictly required or validated.
+    """
+    username = credentials.username
+    user = db.query(User).filter(User.username == username).first()
+    
+    # Auto-register user if they do not exist
+    if not user:
+        user = User(username=username)
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+        
+    return user
+
+# --- FastAPI Application ---
+app = FastAPI(title="Flappy Bird with Persistence")
 
 @app.get("/", response_class=HTMLResponse)
 async def serve_game():
-    """
-    Serves the Flappy Bird game interface.
-    """
+    """Serves the main game interface."""
+    html_file = Path(__file__).parent / "index.html"
     if not html_file.exists():
-        return HTMLResponse(content="<h1>Error: index.html not found.</h1>", status_code=404)
-    
+        raise HTTPException(status_code=404, detail="index.html not found")
     return html_file.read_text(encoding="utf-8")
 
+@app.get("/api/stats")
+def get_user_stats(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    """Retrieves the user's personal record and last result."""
+    record = db.query(func.max(Score.score)).filter(Score.user_id == user.id).scalar() or 0
+    last_score_obj = db.query(Score.score).filter(Score.user_id == user.id).order_by(Score.created_at.desc()).first()
+    last_result = last_score_obj[0] if last_score_obj else 0
+    
+    return {"username": user.username, "record": record, "last_result": last_result}
+
+@app.post("/api/score")
+def save_score(score: int, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    """Records a new score for the authenticated user."""
+    new_score = Score(user_id=user.id, score=score)
+    db.add(new_score)
+    db.commit()
+    return {"status": "success", "score": score}
+
+@app.get("/api/leaderboard")
+def get_leaderboard(db: Session = Depends(get_db)):
+    """Retrieves the top 10 highest scores across all users."""
+    results = db.query(User.username, func.max(Score.score).label('max_score'))\
+        .join(Score, User.id == Score.user_id)\
+        .group_by(User.username)\
+        .order_by(func.max(Score.score).desc())\
+        .limit(10).all()
+        
+    return [{"username": r[0], "score": r[1]} for r in results]
+
 if __name__ == "__main__":
-    # Pass the app as an import string to enable reloading
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
