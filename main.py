@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, func
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
+from passlib.context import CryptContext
 from pathlib import Path
 import uvicorn
 from datetime import datetime
@@ -13,11 +14,21 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
+# --- Password Hashing ---
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
+
 # --- SQLAlchemy Models ---
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True)
+    hashed_password = Column(String)
 
 class Score(Base):
     __tablename__ = "scores"
@@ -43,19 +54,35 @@ def get_current_user(
     db: Session = Depends(get_db)
 ):
     """
-    Relaxed Basic Auth: Validates the username via Basic Auth headers.
-    The password is not strictly required or validated.
+    Validates user credentials. Creates user if new, verifies password if existing.
     """
     username = credentials.username
+    password = credentials.password
+    
+    if not password:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Password required",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+    
     user = db.query(User).filter(User.username == username).first()
     
-    # Auto-register user if they do not exist
     if not user:
-        user = User(username=username)
+        # Create new user
+        user = User(username=username, hashed_password=get_password_hash(password))
         db.add(user)
         db.commit()
         db.refresh(user)
-        
+    else:
+        # Verify password
+        if not verify_password(password, user.hashed_password):
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Incorrect password",
+                headers={"WWW-Authenticate": "Basic"},
+            )
+    
     return user
 
 # --- FastAPI Application ---

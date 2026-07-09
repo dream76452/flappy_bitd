@@ -3,63 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flappy Bird — Neon Edition</title>
+    <title>Flappy Bird — Multi-Theme Edition</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* ============================================
+           THEME VARIABLES
+           ============================================ */
+        :root {
+            --bg-primary: #000000;
+            --bg-panel: rgba(0, 0, 0, 0.85);
+            --bg-card: rgba(0, 0, 0, 0.4);
+            --text-primary: #00ff41;
+            --text-secondary: rgba(0, 255, 65, 0.4);
+            --text-muted: rgba(0, 255, 65, 0.3);
+            --accent: #00ff41;
+            --accent-rgb: 0, 255, 65;
+            --accent-secondary: #00ffaa;
+            --border: rgba(0, 255, 65, 0.15);
+            --border-hover: rgba(0, 255, 65, 0.4);
+            --danger: #ff3366;
+            --danger-rgb: 255, 0, 60;
+            --god-primary: #ffd700;
+            --god-secondary: #ff6ec7;
+            --font-display: 'JetBrains Mono', monospace;
+            --font-body: 'Inter', sans-serif;
+            --glow-strength: 0.5;
+            --panel-blur: 25px;
+        }
+
+        /* --- MATRIX THEME --- */
+        body.theme-matrix {
+            --bg-primary: #000000;
+            --bg-panel: rgba(0, 0, 0, 0.85);
+            --bg-card: rgba(0, 0, 0, 0.4);
+            --text-primary: #00ff41;
+            --text-secondary: rgba(0, 255, 65, 0.4);
+            --text-muted: rgba(0, 255, 65, 0.3);
+            --accent: #00ff41;
+            --accent-rgb: 0, 255, 65;
+            --accent-secondary: #00ffaa;
+            --border: rgba(0, 255, 65, 0.15);
+            --border-hover: rgba(0, 255, 65, 0.4);
+            --font-display: 'JetBrains Mono', monospace;
+            --font-body: 'Inter', sans-serif;
+            --glow-strength: 0.5;
+        }
+
+        /* --- SNOW THEME --- */
+        body.theme-snow {
+            --bg-primary: #0a1628;
+            --bg-panel: rgba(15, 30, 60, 0.85);
+            --bg-card: rgba(20, 40, 80, 0.4);
+            --text-primary: #e0f0ff;
+            --text-secondary: rgba(180, 220, 255, 0.6);
+            --text-muted: rgba(180, 220, 255, 0.4);
+            --accent: #7ec8ff;
+            --accent-rgb: 126, 200, 255;
+            --accent-secondary: #ffffff;
+            --border: rgba(126, 200, 255, 0.2);
+            --border-hover: rgba(126, 200, 255, 0.5);
+            --danger: #ff6b8a;
+            --danger-rgb: 255, 107, 138;
+            --god-primary: #ffd700;
+            --god-secondary: #ffffff;
+            --font-display: 'Orbitron', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --glow-strength: 0.3;
+        }
+
+        /* --- DARK THEME --- */
+        body.theme-dark {
+            --bg-primary: #121212;
+            --bg-panel: rgba(30, 30, 30, 0.9);
+            --bg-card: rgba(40, 40, 40, 0.6);
+            --text-primary: #e0e0e0;
+            --text-secondary: rgba(224, 224, 224, 0.5);
+            --text-muted: rgba(224, 224, 224, 0.3);
+            --accent: #bb86fc;
+            --accent-rgb: 187, 134, 252;
+            --accent-secondary: #03dac6;
+            --border: rgba(255, 255, 255, 0.1);
+            --border-hover: rgba(187, 134, 252, 0.5);
+            --danger: #cf6679;
+            --danger-rgb: 207, 102, 121;
+            --god-primary: #ffd700;
+            --god-secondary: #ff6ec7;
+            --font-display: 'Inter', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --glow-strength: 0.2;
+        }
+
+        /* --- NEON THEME --- */
+        body.theme-neon {
+            --bg-primary: #0a0a1a;
+            --bg-panel: rgba(15, 15, 35, 0.85);
+            --bg-card: rgba(20, 20, 50, 0.5);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.5);
+            --text-muted: rgba(255, 255, 255, 0.3);
+            --accent: #00ffc8;
+            --accent-rgb: 0, 255, 200;
+            --accent-secondary: #ff6ec7;
+            --border: rgba(123, 97, 255, 0.2);
+            --border-hover: rgba(123, 97, 255, 0.5);
+            --danger: #ff6b7a;
+            --danger-rgb: 255, 60, 80;
+            --god-primary: #ffd700;
+            --god-secondary: #ff6ec7;
+            --font-display: 'Orbitron', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --glow-strength: 0.6;
+        }
 
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: #0a0a1a;
-            font-family: 'Inter', sans-serif;
-            color: #e0e0e0;
+            background: var(--bg-primary);
+            font-family: var(--font-body);
+            color: var(--text-primary);
             overflow: hidden;
+            position: relative;
+            transition: background 0.5s ease;
         }
 
-        /* Animated background */
+        /* Background effects */
+        #matrixCanvas, #snowCanvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        #matrixCanvas { opacity: 0; }
+        #snowCanvas { opacity: 0; }
+
+        body.theme-matrix #matrixCanvas { opacity: 0.15; }
+        body.theme-snow #snowCanvas { opacity: 0.8; }
+        body.theme-dark #matrixCanvas { opacity: 0; }
+        body.theme-neon #matrixCanvas { opacity: 0; }
+
+        /* Ambient gradient */
         body::before {
             content: '';
             position: fixed;
             top: -50%; left: -50%;
             width: 200%; height: 200%;
             background: 
-                radial-gradient(ellipse at 20% 50%, rgba(72, 0, 255, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(0, 255, 200, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 80%, rgba(255, 0, 128, 0.1) 0%, transparent 50%);
-            animation: bgShift 15s ease-in-out infinite alternate;
+                radial-gradient(ellipse at 20% 50%, rgba(var(--accent-rgb), 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(var(--accent-rgb), 0.05) 0%, transparent 50%);
+            animation: bgShift 20s ease-in-out infinite alternate;
             z-index: 0;
+            transition: background 0.5s ease;
         }
 
         @keyframes bgShift {
             0% { transform: translate(0, 0) rotate(0deg); }
-            100% { transform: translate(-5%, -3%) rotate(3deg); }
+            100% { transform: translate(-3%, -2%) rotate(2deg); }
         }
 
         .container {
             position: relative;
-            z-index: 1;
+            z-index: 10;
             text-align: center;
             width: 420px;
         }
 
-        /* --- Glassmorphism Panel --- */
+        /* ============================================
+           GLASS PANEL
+           ============================================ */
         .glass-panel {
-            background: rgba(15, 15, 35, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--bg-panel);
+            backdrop-filter: blur(var(--panel-blur));
+            -webkit-backdrop-filter: blur(var(--panel-blur));
+            border: 1px solid var(--border);
             border-radius: 20px;
             padding: 32px 28px;
             box-shadow: 
-                0 8px 32px rgba(0, 0, 0, 0.5),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+                0 8px 32px rgba(0, 0, 0, 0.8),
+                0 0 60px rgba(var(--accent-rgb), 0.05),
+                inset 0 1px 0 rgba(var(--accent-rgb), 0.1);
+            transition: all 0.5s ease;
         }
 
-        /* --- Screens --- */
         .screen {
             display: none;
             animation: fadeSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
@@ -71,57 +202,60 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* --- Typography --- */
+        /* ============================================
+           TYPOGRAPHY
+           ============================================ */
         .title {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 28px;
-            background: linear-gradient(135deg, #00ffc8, #7b61ff, #ff6ec7);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradientText 4s ease infinite;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 32px;
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(var(--accent-rgb), calc(var(--glow-strength) * 1.6)),
+                         0 0 20px rgba(var(--accent-rgb), calc(var(--glow-strength) * 0.8));
             margin-bottom: 6px;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            animation: titleGlow 3s ease-in-out infinite;
         }
 
-        @keyframes gradientText {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(var(--accent-rgb), calc(var(--glow-strength) * 1.6)), 0 0 20px rgba(var(--accent-rgb), calc(var(--glow-strength) * 0.8)); }
+            50% { text-shadow: 0 0 15px rgba(var(--accent-rgb), calc(var(--glow-strength) * 2)), 0 0 30px rgba(var(--accent-rgb), var(--glow-strength)); }
         }
 
         .subtitle {
-            font-size: 13px;
-            color: rgba(255,255,255,0.4);
+            font-family: var(--font-display);
+            font-size: 12px;
+            color: var(--text-secondary);
             margin-bottom: 24px;
-            font-weight: 300;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
         }
 
-        /* --- Inputs --- */
+        /* ============================================
+           INPUTS
+           ============================================ */
         .input-field {
             width: 100%;
             padding: 14px 18px;
             border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.05);
-            color: #fff;
-            font-size: 16px;
-            font-family: 'Inter', sans-serif;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--accent);
+            font-size: 15px;
+            font-family: var(--font-display);
             text-align: center;
             outline: none;
             transition: all 0.3s ease;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
-        .input-field::placeholder { color: rgba(255,255,255,0.25); }
+        .input-field::placeholder { color: var(--text-muted); }
         .input-field:focus {
-            border-color: rgba(123, 97, 255, 0.6);
-            box-shadow: 0 0 20px rgba(123, 97, 255, 0.15);
-            background: rgba(255,255,255,0.08);
+            border-color: var(--border-hover);
+            box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.2);
         }
 
-        /* --- Buttons --- */
+        /* ============================================
+           BUTTONS
+           ============================================ */
         .btn {
             width: 100%;
             padding: 14px 24px;
@@ -130,19 +264,19 @@
             border-radius: 12px;
             font-size: 15px;
             font-weight: 600;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-display);
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
         .btn::after {
             content: '';
             position: absolute;
             top: 50%; left: 50%;
             width: 0; height: 0;
-            background: rgba(255,255,255,0.15);
+            background: rgba(var(--accent-rgb), 0.2);
             border-radius: 50%;
             transform: translate(-50%, -50%);
             transition: width 0.6s, height 0.6s;
@@ -150,63 +284,166 @@
         .btn:active::after { width: 400px; height: 400px; }
 
         .btn-primary {
-            background: linear-gradient(135deg, #7b61ff, #00ffc8);
-            color: #0a0a1a;
-            box-shadow: 0 4px 15px rgba(123, 97, 255, 0.3);
+            background: rgba(var(--accent-rgb), 0.15);
+            color: var(--accent);
+            border: 1px solid rgba(var(--accent-rgb), 0.4);
+            box-shadow: 0 4px 15px rgba(var(--accent-rgb), 0.2);
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(123, 97, 255, 0.45);
+            box-shadow: 0 8px 25px rgba(var(--accent-rgb), 0.4);
+            background: rgba(var(--accent-rgb), 0.25);
+        }
+
+        .btn-guest {
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        .btn-guest:hover {
+            background: rgba(var(--accent-rgb), 0.1);
+            transform: translateY(-2px);
+            border-color: var(--border-hover);
         }
 
         .btn-play {
-            background: linear-gradient(135deg, #00ffc8, #00c9ff);
-            color: #0a0a1a;
+            background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.3), rgba(var(--accent-rgb), 0.15));
+            color: var(--accent);
             font-size: 18px;
             padding: 16px;
-            font-family: 'Orbitron', sans-serif;
+            font-family: var(--font-display);
             font-weight: 700;
             letter-spacing: 3px;
-            box-shadow: 0 4px 20px rgba(0, 255, 200, 0.3);
+            border: 1px solid rgba(var(--accent-rgb), 0.5);
+            box-shadow: 0 4px 20px rgba(var(--accent-rgb), 0.3);
         }
         .btn-play:hover {
             transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 35px rgba(0, 255, 200, 0.5);
+            box-shadow: 0 8px 35px rgba(var(--accent-rgb), 0.5);
         }
 
         .btn-secondary {
-            background: rgba(255,255,255,0.06);
-            color: #c0c0e0;
-            border: 1px solid rgba(255,255,255,0.08);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
         }
         .btn-secondary:hover {
-            background: rgba(255,255,255,0.12);
+            background: rgba(var(--accent-rgb), 0.1);
             transform: translateY(-2px);
-            border-color: rgba(255,255,255,0.15);
+            border-color: var(--border-hover);
         }
 
         .btn-danger {
-            background: rgba(255, 60, 80, 0.15);
-            color: #ff6b7a;
-            border: 1px solid rgba(255, 60, 80, 0.2);
+            background: rgba(var(--danger-rgb), 0.15);
+            color: var(--danger);
+            border: 1px solid rgba(var(--danger-rgb), 0.3);
             width: auto;
             padding: 8px 18px;
             font-size: 12px;
             border-radius: 8px;
         }
         .btn-danger:hover {
-            background: rgba(255, 60, 80, 0.3);
+            background: rgba(var(--danger-rgb), 0.25);
             transform: translateY(-1px);
         }
 
-        /* --- Header Bar --- */
+        .btn-god {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 110, 199, 0.2));
+            color: var(--god-primary);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+        }
+        .btn-god:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+        .btn-god.active {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(255, 110, 199, 0.3));
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+
+        /* ============================================
+           THEME SELECTOR
+           ============================================ */
+        .theme-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            gap: 8px;
+            background: var(--bg-panel);
+            backdrop-filter: blur(var(--panel-blur));
+            -webkit-backdrop-filter: blur(var(--panel-blur));
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 6px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .theme-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        .theme-btn:hover {
+            transform: scale(1.15);
+        }
+        .theme-btn.active {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.6);
+            transform: scale(1.1);
+        }
+
+        .theme-btn[data-theme="matrix"] {
+            background: linear-gradient(135deg, #000, #003311);
+        }
+        .theme-btn[data-theme="snow"] {
+            background: linear-gradient(135deg, #0a1628, #7ec8ff);
+        }
+        .theme-btn[data-theme="dark"] {
+            background: linear-gradient(135deg, #121212, #bb86fc);
+        }
+        .theme-btn[data-theme="neon"] {
+            background: linear-gradient(135deg, #0a0a1a, #ff6ec7);
+        }
+
+        .theme-label {
+            position: absolute;
+            bottom: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            font-family: var(--font-display);
+            color: var(--text-secondary);
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+        }
+        .theme-btn:hover .theme-label {
+            opacity: 1;
+        }
+
+        /* ============================================
+           HEADER BAR
+           ============================================ */
         .header-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 16px;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid var(--border);
         }
         .user-badge {
             display: flex;
@@ -216,24 +453,37 @@
         .user-avatar {
             width: 36px; height: 36px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #7b61ff, #ff6ec7);
+            background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.3), rgba(var(--accent-rgb), 0.1));
+            border: 1px solid rgba(var(--accent-rgb), 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
             font-size: 14px;
-            color: #fff;
+            color: var(--accent);
+            font-family: var(--font-display);
+        }
+        .user-avatar.guest {
+            background: linear-gradient(135deg, rgba(100, 100, 100, 0.3), rgba(150, 150, 150, 0.3));
+            border-color: rgba(150, 150, 150, 0.4);
+            color: #888;
         }
         .user-name {
             font-weight: 600;
             font-size: 14px;
+            color: var(--accent);
+            font-family: var(--font-display);
         }
         .user-label {
             font-size: 11px;
-            color: rgba(255,255,255,0.35);
+            color: var(--text-secondary);
+            font-family: var(--font-display);
         }
+        .user-label.guest { color: #666; }
 
-        /* --- Stats Cards --- */
+        /* ============================================
+           STATS
+           ============================================ */
         .stats-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -241,43 +491,44 @@
             margin: 16px 0;
         }
         .stat-card {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.06);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
             border-radius: 14px;
             padding: 16px 12px;
             transition: all 0.3s;
         }
         .stat-card:hover {
-            background: rgba(255,255,255,0.07);
-            border-color: rgba(123, 97, 255, 0.3);
+            background: rgba(var(--accent-rgb), 0.05);
+            border-color: var(--border-hover);
         }
         .stat-value {
-            font-family: 'Orbitron', sans-serif;
+            font-family: var(--font-display);
             font-size: 28px;
             font-weight: 700;
-            background: linear-gradient(135deg, #00ffc8, #7b61ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(var(--accent-rgb), var(--glow-strength));
         }
         .stat-label {
             font-size: 11px;
-            color: rgba(255,255,255,0.35);
+            color: var(--text-secondary);
             margin-top: 4px;
             text-transform: uppercase;
             letter-spacing: 1px;
+            font-family: var(--font-display);
         }
 
-        /* --- Leaderboard --- */
+        /* ============================================
+           LEADERBOARD
+           ============================================ */
         .lb-container {
             max-height: 320px;
             overflow-y: auto;
             scrollbar-width: thin;
-            scrollbar-color: rgba(123,97,255,0.3) transparent;
+            scrollbar-color: rgba(var(--accent-rgb), 0.3) transparent;
         }
         .lb-container::-webkit-scrollbar { width: 4px; }
         .lb-container::-webkit-scrollbar-thumb {
-            background: rgba(123,97,255,0.3);
+            background: rgba(var(--accent-rgb), 0.3);
             border-radius: 2px;
         }
 
@@ -287,121 +538,126 @@
             padding: 12px 14px;
             margin: 4px 0;
             border-radius: 10px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.04);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
             transition: all 0.3s;
+            font-family: var(--font-display);
         }
         .lb-item:hover {
-            background: rgba(255,255,255,0.07);
+            background: rgba(var(--accent-rgb), 0.05);
             transform: translateX(4px);
+            border-color: var(--border-hover);
         }
-        .lb-item.top-1 { border-color: rgba(255,215,0,0.3); background: rgba(255,215,0,0.05); }
-        .lb-item.top-2 { border-color: rgba(192,192,192,0.3); background: rgba(192,192,192,0.04); }
-        .lb-item.top-3 { border-color: rgba(205,127,50,0.3); background: rgba(205,127,50,0.04); }
+        .lb-item.top-1 { border-color: rgba(255, 215, 0, 0.4); background: rgba(255, 215, 0, 0.05); }
+        .lb-item.top-2 { border-color: rgba(192, 192, 192, 0.3); background: rgba(192, 192, 192, 0.03); }
+        .lb-item.top-3 { border-color: rgba(205, 127, 50, 0.3); background: rgba(205, 127, 50, 0.03); }
 
         .lb-rank {
             width: 32px;
-            font-family: 'Orbitron', sans-serif;
             font-weight: 700;
             font-size: 14px;
-            color: rgba(255,255,255,0.5);
+            color: var(--text-secondary);
         }
-        .lb-item.top-1 .lb-rank { color: #ffd700; }
+        .lb-item.top-1 .lb-rank { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
         .lb-item.top-2 .lb-rank { color: #c0c0c0; }
         .lb-item.top-3 .lb-rank { color: #cd7f32; }
 
-        .lb-name { flex: 1; text-align: left; font-weight: 500; font-size: 14px; }
+        .lb-name { flex: 1; text-align: left; font-weight: 500; font-size: 14px; color: var(--text-primary); }
         .lb-score {
-            font-family: 'Orbitron', sans-serif;
             font-weight: 700;
             font-size: 16px;
-            color: #00ffc8;
+            color: var(--accent);
+            text-shadow: 0 0 8px rgba(var(--accent-rgb), 0.4);
         }
 
         .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 13px;
+            font-family: var(--font-display);
+            font-size: 12px;
             letter-spacing: 2px;
-            color: rgba(255,255,255,0.3);
+            color: var(--text-secondary);
             text-transform: uppercase;
             margin-bottom: 14px;
         }
 
-        /* --- Canvas --- */
         #gameCanvas {
             border-radius: 16px;
             box-shadow: 
-                0 0 40px rgba(123, 97, 255, 0.2),
-                0 0 80px rgba(0, 255, 200, 0.1),
-                0 20px 60px rgba(0,0,0,0.5);
-            border: 2px solid rgba(255,255,255,0.08);
+                0 0 40px rgba(var(--accent-rgb), 0.2),
+                0 0 80px rgba(var(--accent-rgb), 0.1),
+                0 20px 60px rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--border);
             display: none;
             cursor: pointer;
-        }
-
-        /* --- Speed Indicator --- */
-        .speed-bar-container {
-            position: absolute;
-            top: 12px; right: 12px;
-            width: 8px; height: 120px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 4px;
-            overflow: hidden;
-            display: none;
-            z-index: 10;
-        }
-        .speed-bar-fill {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            background: linear-gradient(to top, #00ffc8, #ff6ec7);
-            border-radius: 4px;
-            transition: height 0.3s;
-        }
-
-        /* --- Floating particles in menu --- */
-        .particles-bg {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-        .particle {
-            position: absolute;
-            width: 3px; height: 3px;
-            background: rgba(123, 97, 255, 0.4);
-            border-radius: 50%;
-            animation: float linear infinite;
-        }
-        @keyframes float {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
         }
 
         .btn-group { margin-top: 8px; }
         .divider {
             height: 1px;
-            background: rgba(255,255,255,0.06);
+            background: var(--border);
             margin: 16px 0;
+        }
+
+        .error-msg {
+            color: var(--danger);
+            font-size: 13px;
+            margin-top: 8px;
+            min-height: 20px;
+            font-family: var(--font-display);
+        }
+
+        .god-mode-indicator {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.9), rgba(255, 110, 199, 0.9));
+            color: #000;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            display: none;
+            z-index: 10;
         }
     </style>
 </head>
-<body>
-    <!-- Floating background particles -->
-    <div class="particles-bg" id="particles-bg"></div>
+<body class="theme-matrix">
+    <canvas id="matrixCanvas"></canvas>
+    <canvas id="snowCanvas"></canvas>
+
+    <!-- Theme Selector -->
+    <div class="theme-selector">
+        <button class="theme-btn active" data-theme="matrix" onclick="setTheme('matrix')">
+            🟢
+            <span class="theme-label">MATRIX</span>
+        </button>
+        <button class="theme-btn" data-theme="snow" onclick="setTheme('snow')">
+            ❄️
+            <span class="theme-label">SNOW</span>
+        </button>
+        <button class="theme-btn" data-theme="dark" onclick="setTheme('dark')">
+            🌑
+            <span class="theme-label">DARK</span>
+        </button>
+        <button class="theme-btn" data-theme="neon" onclick="setTheme('neon')">
+            🌈
+            <span class="theme-label">NEON</span>
+        </button>
+    </div>
 
     <div class="container">
         <!-- Login Screen -->
         <div id="login-screen" class="screen active">
             <div class="glass-panel">
                 <div class="title">FLAPPY BIRD</div>
-                <div class="subtitle">NEON EDITION</div>
-                <input type="text" id="username-input" class="input-field" placeholder="Enter callsign..." autocomplete="off" maxlength="20">
-                <button class="btn btn-primary" onclick="handleLogin()">LAUNCH</button>
+                <div class="subtitle" id="theme-subtitle">// MATRIX EDITION</div>
+                <input type="text" id="username-input" class="input-field" placeholder="enter_callsign()" autocomplete="off" maxlength="20">
+                <input type="password" id="password-input" class="input-field" placeholder="enter_password()" autocomplete="off" maxlength="50">
+                <div class="error-msg" id="login-error"></div>
+                <button class="btn btn-primary" onclick="handleLogin()">INITIALIZE</button>
+                <button class="btn btn-guest" onclick="handleGuestLogin()">GUEST_MODE</button>
             </div>
         </div>
 
@@ -413,97 +669,353 @@
                         <div class="user-avatar" id="user-avatar">?</div>
                         <div>
                             <div class="user-name" id="user-display">Pilot</div>
-                            <div class="user-label">ACTIVE SESSION</div>
+                            <div class="user-label" id="user-label">ACTIVE_SESSION</div>
                         </div>
                     </div>
-                    <button class="btn btn-danger" onclick="handleLogout()">LOG OUT</button>
+                    <button class="btn btn-danger" onclick="handleLogout()">TERMINATE</button>
                 </div>
 
-                <div class="stats-row">
+                <div class="stats-row" id="stats-row">
                     <div class="stat-card">
                         <div class="stat-value" id="stat-record">0</div>
-                        <div class="stat-label">Best Score</div>
+                        <div class="stat-label">MAX_SCORE</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-value" id="stat-last">0</div>
-                        <div class="stat-label">Last Flight</div>
+                        <div class="stat-label">LAST_RUN</div>
                     </div>
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn btn-play" onclick="startGame()">▶ PLAY</button>
+                    <button class="btn btn-play" onclick="startGame()">▶ EXECUTE</button>
                     <button class="btn btn-secondary" onclick="showLeaderboard()">🏆 LEADERBOARD</button>
+                    <button class="btn btn-god" id="god-mode-btn" onclick="toggleGodMode()" style="display:none;">⚡ GOD_MODE</button>
                 </div>
 
                 <div id="leaderboard-display" style="display:none; margin-top: 20px;">
                     <div class="divider"></div>
-                    <div class="section-title">Top 10 Pilots</div>
+                    <div class="section-title">// TOP_10_PILOTS</div>
                     <div class="lb-container" id="lb-list"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Game Canvas Wrapper -->
+        <!-- Game Canvas -->
         <div style="position: relative; display: inline-block;">
             <canvas id="gameCanvas" width="420" height="620"></canvas>
+            <div class="god-mode-indicator" id="god-indicator">⚡ GOD_MODE</div>
         </div>
     </div>
 
     <script>
         // ============================
-        // MENU PARTICLES
+        // THEME SYSTEM
         // ============================
-        (function createMenuParticles() {
-            const container = document.getElementById('particles-bg');
-            for (let i = 0; i < 40; i++) {
-                const p = document.createElement('div');
-                p.className = 'particle';
-                p.style.left = Math.random() * 100 + '%';
-                p.style.animationDuration = (6 + Math.random() * 10) + 's';
-                p.style.animationDelay = (Math.random() * 10) + 's';
-                p.style.width = p.style.height = (2 + Math.random() * 3) + 'px';
-                const colors = ['rgba(123,97,255,0.4)', 'rgba(0,255,200,0.3)', 'rgba(255,110,199,0.3)'];
-                p.style.background = colors[Math.floor(Math.random() * colors.length)];
-                container.appendChild(p);
+        const themes = {
+            matrix: {
+                subtitle: '// MATRIX EDITION',
+                bird: { body: '#00ff41', bodyEnd: '#00aa2a', wing: '#008822', beak: '#00ff41', glow: '0, 255, 65' },
+                pipe: { start: '#003311', mid: '#00aa2a', capStart: '#002208', capMid: '#008822', edge: 'rgba(0, 255, 65, 0.4)' },
+                sky: ['#000000', '#000a00', '#001a00', '#002200'],
+                ground: ['#001a00', '#000a00', '#000000'],
+                groundLine: 'rgba(0, 255, 65, 0.8)',
+                groundLineGlow: 'rgba(0, 255, 65, 0.2)',
+                groundGrid: 'rgba(0, 255, 65, 0.1)',
+                starColor: '0, 255, 65',
+                cloudColor: '0, 255, 65',
+                trailColor: '0, 255, 65',
+                particleFlap: '0, 255, 65',
+                particleScore: '0, 255, 65',
+                scoreColor: '#00ff41',
+                scoreGlow: 'rgba(0, 255, 65, 0.8)',
+                speedBarStart: '#00ff41',
+                speedBarEnd: '#00ffaa',
+                speedLabel: 'rgba(0, 255, 65, 0.5)',
+                speedBarBg: 'rgba(0, 255, 65, 0.1)',
+                startText: 'READY?',
+                startSubtext: '// PRESS_SPACE_TO_EXECUTE',
+                gameOverText: 'SYSTEM_FAILURE',
+                gameOverScoreLabel: '// FINAL_SCORE',
+                gameOverRestart: '// TAP_TO_RESTART',
+                gameOverColor: '#ff3366',
+                gameOverGlow: 'rgba(255, 0, 60, 0.8)',
+                emptyLb: '// NO_DATA_FOUND'
+            },
+            snow: {
+                subtitle: '// WINTER EDITION',
+                bird: { body: '#ffffff', bodyEnd: '#a0d8ef', wing: '#7ec8ff', beak: '#ff9966', glow: '126, 200, 255' },
+                pipe: { start: '#1a3a5c', mid: '#4a7fa8', capStart: '#0f2a45', capMid: '#3a6a90', edge: 'rgba(126, 200, 255, 0.5)' },
+                sky: ['#0a1628', '#152a4a', '#1e3a60', '#2a4a75'],
+                ground: ['#1e3a60', '#152a4a', '#0a1628'],
+                groundLine: 'rgba(255, 255, 255, 0.6)',
+                groundLineGlow: 'rgba(126, 200, 255, 0.3)',
+                groundGrid: 'rgba(126, 200, 255, 0.15)',
+                starColor: '255, 255, 255',
+                cloudColor: '255, 255, 255',
+                trailColor: '126, 200, 255',
+                particleFlap: '200, 230, 255',
+                particleScore: '255, 255, 255',
+                scoreColor: '#ffffff',
+                scoreGlow: 'rgba(126, 200, 255, 0.8)',
+                speedBarStart: '#7ec8ff',
+                speedBarEnd: '#ffffff',
+                speedLabel: 'rgba(255, 255, 255, 0.5)',
+                speedBarBg: 'rgba(255, 255, 255, 0.1)',
+                startText: 'READY?',
+                startSubtext: '// PRESS_SPACE_TO_FLY',
+                gameOverText: 'CRASHED',
+                gameOverScoreLabel: '// FINAL_SCORE',
+                gameOverRestart: '// TAP_TO_RESTART',
+                gameOverColor: '#ff6b8a',
+                gameOverGlow: 'rgba(255, 107, 138, 0.6)',
+                emptyLb: '// NO_FLIGHTS_YET'
+            },
+            dark: {
+                subtitle: '// MINIMAL EDITION',
+                bird: { body: '#bb86fc', bodyEnd: '#6200ea', wing: '#9965d6', beak: '#03dac6', glow: '187, 134, 252' },
+                pipe: { start: '#1e1e1e', mid: '#3a3a3a', capStart: '#151515', capMid: '#2a2a2a', edge: 'rgba(187, 134, 252, 0.4)' },
+                sky: ['#121212', '#1a1a1a', '#222222', '#2a2a2a'],
+                ground: ['#222222', '#1a1a1a', '#121212'],
+                groundLine: 'rgba(187, 134, 252, 0.6)',
+                groundLineGlow: 'rgba(187, 134, 252, 0.2)',
+                groundGrid: 'rgba(187, 134, 252, 0.08)',
+                starColor: '224, 224, 224',
+                cloudColor: '187, 134, 252',
+                trailColor: '187, 134, 252',
+                particleFlap: '187, 134, 252',
+                particleScore: '3, 218, 198',
+                scoreColor: '#e0e0e0',
+                scoreGlow: 'rgba(187, 134, 252, 0.6)',
+                speedBarStart: '#bb86fc',
+                speedBarEnd: '#03dac6',
+                speedLabel: 'rgba(224, 224, 224, 0.4)',
+                speedBarBg: 'rgba(255, 255, 255, 0.05)',
+                startText: 'READY?',
+                startSubtext: '// PRESS_SPACE',
+                gameOverText: 'GAME OVER',
+                gameOverScoreLabel: '// SCORE',
+                gameOverRestart: '// TAP TO CONTINUE',
+                gameOverColor: '#cf6679',
+                gameOverGlow: 'rgba(207, 102, 121, 0.6)',
+                emptyLb: '// NO DATA'
+            },
+            neon: {
+                subtitle: '// NEON EDITION',
+                bird: { body: '#ffe066', bodyEnd: '#f0a030', wing: '#e8941a', beak: '#ff6b35', glow: '0, 255, 200' },
+                pipe: { start: '#1a8a4a', mid: '#2ecc71', capStart: '#15713d', capMid: '#27ae60', edge: 'rgba(0, 255, 200, 0.4)' },
+                sky: ['#0a0a2e', '#1a1a4e', '#2d1b69', '#4a1942'],
+                ground: ['#2d1b69', '#1a1a3e', '#0a0a1a'],
+                groundLine: 'rgba(123, 97, 255, 0.8)',
+                groundLineGlow: 'rgba(123, 97, 255, 0.2)',
+                groundGrid: 'rgba(123, 97, 255, 0.1)',
+                starColor: '255, 255, 255',
+                cloudColor: '255, 255, 255',
+                trailColor: '0, 255, 200',
+                particleFlap: '0, 255, 200',
+                particleScore: '255, 215, 0',
+                scoreColor: '#ffffff',
+                scoreGlow: 'rgba(0, 255, 200, 0.8)',
+                speedBarStart: '#00ffc8',
+                speedBarEnd: '#ff6ec7',
+                speedLabel: 'rgba(255, 255, 255, 0.4)',
+                speedBarBg: 'rgba(255, 255, 255, 0.1)',
+                startText: 'READY?',
+                startSubtext: 'TAP OR PRESS SPACE',
+                gameOverText: 'GAME OVER',
+                gameOverScoreLabel: 'SCORE',
+                gameOverRestart: 'TAP TO RETURN',
+                gameOverColor: '#ff6b7a',
+                gameOverGlow: 'rgba(255, 60, 80, 0.6)',
+                emptyLb: 'No flights recorded yet.'
             }
-        })();
+        };
+
+        let currentTheme = localStorage.getItem('theme') || 'matrix';
+
+        function setTheme(theme) {
+            currentTheme = theme;
+            localStorage.setItem('theme', theme);
+            document.body.className = `theme-${theme}`;
+            
+            // Update subtitle
+            document.getElementById('theme-subtitle').innerText = themes[theme].subtitle;
+            
+            // Update active button
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.theme === theme);
+            });
+        }
+
+        // Initialize theme
+        setTheme(currentTheme);
+
+        // ============================
+        // MATRIX RAIN
+        // ============================
+        const matrixCanvas = document.getElementById('matrixCanvas');
+        const matrixCtx = matrixCanvas.getContext('2d');
+        
+        function resizeMatrix() {
+            matrixCanvas.width = window.innerWidth;
+            matrixCanvas.height = window.innerHeight;
+        }
+        resizeMatrix();
+        window.addEventListener('resize', resizeMatrix);
+
+        const matrixChars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF';
+        const fontSize = 14;
+        let columns = matrixCanvas.width / fontSize;
+        let drops = [];
+        for (let i = 0; i < columns; i++) drops[i] = Math.random() * -100;
+
+        function drawMatrix() {
+            matrixCtx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            matrixCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+            matrixCtx.fillStyle = '#00ff41';
+            matrixCtx.font = fontSize + 'px JetBrains Mono';
+            
+            for (let i = 0; i < drops.length; i++) {
+                const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
+                matrixCtx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+
+        // ============================
+        // SNOW EFFECT
+        // ============================
+        const snowCanvas = document.getElementById('snowCanvas');
+        const snowCtx = snowCanvas.getContext('2d');
+        
+        function resizeSnow() {
+            snowCanvas.width = window.innerWidth;
+            snowCanvas.height = window.innerHeight;
+        }
+        resizeSnow();
+        window.addEventListener('resize', resizeSnow);
+
+        const snowflakes = [];
+        for (let i = 0; i < 100; i++) {
+            snowflakes.push({
+                x: Math.random() * snowCanvas.width,
+                y: Math.random() * snowCanvas.height,
+                r: 1 + Math.random() * 3,
+                speed: 0.5 + Math.random() * 1.5,
+                wind: -0.5 + Math.random() * 1,
+                opacity: 0.3 + Math.random() * 0.5
+            });
+        }
+
+        function drawSnow() {
+            snowCtx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+            for (let flake of snowflakes) {
+                snowCtx.beginPath();
+                snowCtx.arc(flake.x, flake.y, flake.r, 0, Math.PI * 2);
+                snowCtx.fillStyle = `rgba(255, 255, 255, ${flake.opacity})`;
+                snowCtx.fill();
+                flake.y += flake.speed;
+                flake.x += flake.wind;
+                if (flake.y > snowCanvas.height) { flake.y = -10; flake.x = Math.random() * snowCanvas.width; }
+                if (flake.x > snowCanvas.width) flake.x = 0;
+                if (flake.x < 0) flake.x = snowCanvas.width;
+            }
+        }
+
+        function animateBackground() {
+            if (currentTheme === 'matrix') drawMatrix();
+            if (currentTheme === 'snow') drawSnow();
+            requestAnimationFrame(animateBackground);
+        }
+        animateBackground();
 
         // ============================
         // AUTH & STATE
         // ============================
         let authToken = localStorage.getItem('authToken');
         let username = localStorage.getItem('username');
+        let isGuest = localStorage.getItem('isGuest') === 'true';
+        let godMode = localStorage.getItem('godMode') === 'true';
         let userStats = { record: 0, last_result: 0 };
 
         function handleLogin() {
             const uname = document.getElementById('username-input').value.trim();
-            if (!uname) return;
-            authToken = "Basic " + btoa(uname + ":");
+            const pass = document.getElementById('password-input').value;
+            const errorEl = document.getElementById('login-error');
+            
+            if (!uname) { errorEl.innerText = '// ERROR: callsign_required'; return; }
+            if (!pass) { errorEl.innerText = '// ERROR: password_required'; return; }
+            
+            errorEl.innerText = '';
+            authToken = "Basic " + btoa(uname + ":" + pass);
             username = uname;
+            isGuest = false;
             localStorage.setItem('authToken', authToken);
             localStorage.setItem('username', username);
+            localStorage.setItem('isGuest', 'false');
+            loadMenu();
+        }
+
+        function handleGuestLogin() {
+            authToken = null;
+            username = 'Guest';
+            isGuest = true;
+            godMode = false;
+            localStorage.removeItem('authToken');
+            localStorage.setItem('username', username);
+            localStorage.setItem('isGuest', 'true');
+            localStorage.setItem('godMode', 'false');
             loadMenu();
         }
 
         document.getElementById('username-input').addEventListener('keydown', e => {
+            if (e.key === 'Enter') document.getElementById('password-input').focus();
+        });
+        document.getElementById('password-input').addEventListener('keydown', e => {
             if (e.key === 'Enter') handleLogin();
         });
 
         function handleLogout() {
-            authToken = null; username = null;
+            authToken = null; username = null; isGuest = false; godMode = false;
             localStorage.removeItem('authToken');
             localStorage.removeItem('username');
+            localStorage.removeItem('isGuest');
+            localStorage.removeItem('godMode');
             showScreen('login-screen');
         }
 
         async function loadMenu() {
             showScreen('menu-screen');
             document.getElementById('user-display').innerText = username;
-            document.getElementById('user-avatar').innerText = username.charAt(0).toUpperCase();
-            await fetchStats();
+            document.getElementById('user-avatar').innerText = isGuest ? 'G' : username.charAt(0).toUpperCase();
+            
+            const avatarEl = document.getElementById('user-avatar');
+            const labelEl = document.getElementById('user-label');
+            
+            if (isGuest) {
+                avatarEl.classList.add('guest');
+                labelEl.classList.add('guest');
+                labelEl.innerText = 'GUEST_MODE';
+                document.getElementById('stats-row').style.display = 'none';
+                document.getElementById('god-mode-btn').style.display = 'none';
+            } else {
+                avatarEl.classList.remove('guest');
+                labelEl.classList.remove('guest');
+                labelEl.innerText = 'ACTIVE_SESSION';
+                document.getElementById('stats-row').style.display = 'grid';
+                await fetchStats();
+                
+                if (username === 'admin') {
+                    document.getElementById('god-mode-btn').style.display = 'block';
+                    updateGodModeButton();
+                } else {
+                    document.getElementById('god-mode-btn').style.display = 'none';
+                }
+            }
         }
 
         async function fetchStats() {
+            if (isGuest) return;
             try {
                 const res = await fetch('/api/stats', { headers: { 'Authorization': authToken } });
                 if (res.status === 401) { handleLogout(); return; }
@@ -513,16 +1025,35 @@
             } catch (e) { console.error(e); }
         }
 
+        function toggleGodMode() {
+            godMode = !godMode;
+            localStorage.setItem('godMode', godMode);
+            updateGodModeButton();
+        }
+
+        function updateGodModeButton() {
+            const btn = document.getElementById('god-mode-btn');
+            if (godMode) {
+                btn.classList.add('active');
+                btn.innerText = '⚡ GOD_MODE: ON';
+            } else {
+                btn.classList.remove('active');
+                btn.innerText = '⚡ GOD_MODE';
+            }
+        }
+
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
             document.getElementById('gameCanvas').style.display = 'none';
+            document.getElementById('god-indicator').style.display = 'none';
             if (id !== 'gameCanvas') {
                 const el = document.getElementById(id);
                 el.classList.remove('active');
-                void el.offsetWidth; // reflow to retrigger animation
+                void el.offsetWidth;
                 el.classList.add('active');
             } else {
                 document.getElementById('gameCanvas').style.display = 'block';
+                if (godMode && !isGuest) document.getElementById('god-indicator').style.display = 'block';
             }
         }
 
@@ -535,8 +1066,9 @@
             try {
                 const res = await fetch('/api/leaderboard');
                 const data = await res.json();
+                const t = themes[currentTheme];
                 if (data.length === 0) {
-                    list.innerHTML = '<div style="color:rgba(255,255,255,0.3); padding:20px;">No flights recorded yet.</div>';
+                    list.innerHTML = `<div style="color:var(--text-muted); padding:20px; font-family: var(--font-display);">${t.emptyLb}</div>`;
                     return;
                 }
                 list.innerHTML = data.map((item, i) => {
@@ -564,31 +1096,26 @@
         let particles = [];
         let groundOffset = 0;
 
-        // Cloud system
         let clouds = [];
         for (let i = 0; i < 6; i++) {
             clouds.push({
-                x: Math.random() * W,
-                y: 30 + Math.random() * 180,
+                x: Math.random() * W, y: 30 + Math.random() * 180,
                 w: 60 + Math.random() * 80,
                 speed: 0.3 + Math.random() * 0.5,
-                opacity: 0.08 + Math.random() * 0.12
+                opacity: 0.05 + Math.random() * 0.08
             });
         }
 
-        // Star system
         let stars = [];
         for (let i = 0; i < 50; i++) {
             stars.push({
-                x: Math.random() * W,
-                y: Math.random() * (H - 100),
+                x: Math.random() * W, y: Math.random() * (H - 100),
                 r: 0.5 + Math.random() * 1.5,
                 twinkle: Math.random() * Math.PI * 2,
                 speed: 0.02 + Math.random() * 0.04
             });
         }
 
-        // Bird trail
         let trail = [];
 
         const bird = {
@@ -597,46 +1124,52 @@
             rotation: 0, wingPhase: 0,
 
             draw() {
+                const t = themes[currentTheme];
                 ctx.save();
                 ctx.translate(this.x + 14, this.y + 14);
                 
-                // Rotation based on velocity
                 let targetRot = Math.min(Math.max(this.velocity * 4, -30), 70);
                 this.rotation += (targetRot - this.rotation) * 0.15;
                 ctx.rotate(this.rotation * Math.PI / 180);
 
-                // Glow
+                if (godMode && !isGuest) {
+                    const glow = ctx.createRadialGradient(0, 0, 4, 0, 0, 30);
+                    glow.addColorStop(0, 'rgba(255, 215, 0, 0.5)');
+                    glow.addColorStop(1, 'rgba(255, 110, 199, 0)');
+                    ctx.fillStyle = glow;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 30, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
                 const glow = ctx.createRadialGradient(0, 0, 4, 0, 0, 22);
-                glow.addColorStop(0, 'rgba(0, 255, 200, 0.3)');
-                glow.addColorStop(1, 'rgba(0, 255, 200, 0)');
+                glow.addColorStop(0, `rgba(${t.bird.glow}, 0.4)`);
+                glow.addColorStop(1, `rgba(${t.bird.glow}, 0)`);
                 ctx.fillStyle = glow;
                 ctx.beginPath();
                 ctx.arc(0, 0, 22, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Body
                 const bodyGrad = ctx.createRadialGradient(-3, -3, 2, 0, 0, 14);
-                bodyGrad.addColorStop(0, '#ffe066');
-                bodyGrad.addColorStop(1, '#f0a030');
+                bodyGrad.addColorStop(0, t.bird.body);
+                bodyGrad.addColorStop(1, t.bird.bodyEnd);
                 ctx.fillStyle = bodyGrad;
                 ctx.beginPath();
                 ctx.arc(0, 0, 14, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Wing
                 this.wingPhase += 0.25;
                 const wingY = Math.sin(this.wingPhase) * 4;
-                ctx.fillStyle = '#e8941a';
+                ctx.fillStyle = t.bird.wing;
                 ctx.beginPath();
                 ctx.ellipse(-6, wingY + 2, 9, 5, -0.3, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Eye
                 ctx.fillStyle = '#fff';
                 ctx.beginPath();
                 ctx.arc(6, -4, 5, 0, Math.PI * 2);
                 ctx.fill();
-                ctx.fillStyle = '#1a1a2e';
+                ctx.fillStyle = '#000';
                 ctx.beginPath();
                 ctx.arc(7.5, -4, 2.5, 0, Math.PI * 2);
                 ctx.fill();
@@ -645,8 +1178,7 @@
                 ctx.arc(8.5, -5, 1, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Beak
-                ctx.fillStyle = '#ff6b35';
+                ctx.fillStyle = t.bird.beak;
                 ctx.beginPath();
                 ctx.moveTo(12, 0);
                 ctx.lineTo(20, 2);
@@ -662,7 +1194,6 @@
                     this.velocity += this.gravity;
                     this.y += this.velocity;
 
-                    // Trail
                     if (frames % 2 === 0) {
                         trail.push({ x: this.x + 14, y: this.y + 14, alpha: 0.6, r: 4 });
                     }
@@ -688,38 +1219,34 @@
             position: [], gap: 155, dx: baseSpeed, pipeWidth: 58,
 
             draw() {
+                const t = themes[currentTheme];
                 for (let p of this.position) {
-                    // Top pipe
                     const topGrad = ctx.createLinearGradient(p.x, 0, p.x + this.pipeWidth, 0);
-                    topGrad.addColorStop(0, '#1a8a4a');
-                    topGrad.addColorStop(0.5, '#2ecc71');
-                    topGrad.addColorStop(1, '#1a8a4a');
+                    topGrad.addColorStop(0, t.pipe.start);
+                    topGrad.addColorStop(0.5, t.pipe.mid);
+                    topGrad.addColorStop(1, t.pipe.start);
                     ctx.fillStyle = topGrad;
                     ctx.fillRect(p.x, 0, this.pipeWidth, p.topHeight);
 
-                    // Top cap
                     const capGrad = ctx.createLinearGradient(p.x - 4, 0, p.x + this.pipeWidth + 4, 0);
-                    capGrad.addColorStop(0, '#15713d');
-                    capGrad.addColorStop(0.5, '#27ae60');
-                    capGrad.addColorStop(1, '#15713d');
+                    capGrad.addColorStop(0, t.pipe.capStart);
+                    capGrad.addColorStop(0.5, t.pipe.capMid);
+                    capGrad.addColorStop(1, t.pipe.capStart);
                     ctx.fillStyle = capGrad;
                     this.roundRect(p.x - 5, p.topHeight - 28, this.pipeWidth + 10, 28, 4);
 
-                    // Neon edge top
-                    ctx.strokeStyle = 'rgba(0, 255, 200, 0.25)';
+                    ctx.strokeStyle = t.pipe.edge;
                     ctx.lineWidth = 1;
                     ctx.strokeRect(p.x - 5, p.topHeight - 28, this.pipeWidth + 10, 28);
 
-                    // Bottom pipe
                     const bottomY = p.topHeight + this.gap;
                     ctx.fillStyle = topGrad;
                     ctx.fillRect(p.x, bottomY, this.pipeWidth, H - bottomY - 70);
 
-                    // Bottom cap
                     ctx.fillStyle = capGrad;
                     this.roundRect(p.x - 5, bottomY, this.pipeWidth + 10, 28, 4);
 
-                    ctx.strokeStyle = 'rgba(0, 255, 200, 0.25)';
+                    ctx.strokeStyle = t.pipe.edge;
                     ctx.strokeRect(p.x - 5, bottomY, this.pipeWidth + 10, 28);
                 }
             },
@@ -756,10 +1283,11 @@
                     let p = this.position[i];
                     p.x -= this.dx;
 
-                    // Collision
-                    if (bird.x + bird.width - 4 > p.x && bird.x + 4 < p.x + this.pipeWidth) {
-                        if (bird.y + 4 < p.topHeight || bird.y + bird.height - 4 > p.topHeight + this.gap) {
-                            triggerGameOver();
+                    if (!(godMode && !isGuest)) {
+                        if (bird.x + bird.width - 4 > p.x && bird.x + 4 < p.x + this.pipeWidth) {
+                            if (bird.y + 4 < p.topHeight || bird.y + bird.height - 4 > p.topHeight + this.gap) {
+                                triggerGameOver();
+                            }
                         }
                     }
 
@@ -775,22 +1303,21 @@
             }
         };
 
-        // ============================
-        // PARTICLES
-        // ============================
         function spawnFlapParticles() {
+            const t = themes[currentTheme];
             for (let i = 0; i < 6; i++) {
                 particles.push({
                     x: bird.x + 14, y: bird.y + 20,
                     vx: -1 - Math.random() * 2, vy: 1 + Math.random() * 2,
                     life: 1, decay: 0.03 + Math.random() * 0.02,
                     r: 2 + Math.random() * 3,
-                    color: Math.random() > 0.5 ? '0, 255, 200' : '123, 97, 255'
+                    color: t.particleFlap
                 });
             }
         }
 
         function spawnScoreParticles() {
+            const t = themes[currentTheme];
             for (let i = 0; i < 12; i++) {
                 const angle = (Math.PI * 2 / 12) * i;
                 particles.push({
@@ -799,7 +1326,7 @@
                     vy: Math.sin(angle) * (2 + Math.random() * 2),
                     life: 1, decay: 0.025,
                     r: 2 + Math.random() * 2,
-                    color: '255, 215, 0'
+                    color: t.particleScore
                 });
             }
         }
@@ -820,11 +1347,9 @@
         function updateParticles() {
             for (let i = particles.length - 1; i >= 0; i--) {
                 let p = particles[i];
-                p.x += p.vx;
-                p.y += p.vy;
+                p.x += p.vx; p.y += p.vy;
                 p.life -= p.decay;
-                p.vx *= 0.97;
-                p.vy *= 0.97;
+                p.vx *= 0.97; p.vy *= 0.97;
                 if (p.life <= 0) particles.splice(i, 1);
             }
         }
@@ -838,9 +1363,6 @@
             }
         }
 
-        // ============================
-        // TRAIL
-        // ============================
         function updateTrail() {
             for (let i = trail.length - 1; i >= 0; i--) {
                 trail[i].alpha -= 0.04;
@@ -850,32 +1372,29 @@
         }
 
         function drawTrail() {
-            for (let t of trail) {
-                ctx.fillStyle = `rgba(0, 255, 200, ${t.alpha * 0.4})`;
+            const t = themes[currentTheme];
+            for (let tr of trail) {
+                ctx.fillStyle = `rgba(${t.trailColor}, ${tr.alpha * 0.4})`;
                 ctx.beginPath();
-                ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
+                ctx.arc(tr.x, tr.y, tr.r, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
 
-        // ============================
-        // DRAWING HELPERS
-        // ============================
         function drawSky() {
+            const t = themes[currentTheme];
             const skyGrad = ctx.createLinearGradient(0, 0, 0, H - 70);
-            skyGrad.addColorStop(0, '#0a0a2e');
-            skyGrad.addColorStop(0.4, '#1a1a4e');
-            skyGrad.addColorStop(0.7, '#2d1b69');
-            skyGrad.addColorStop(1, '#4a1942');
+            t.sky.forEach((c, i) => skyGrad.addColorStop(i / (t.sky.length - 1), c));
             ctx.fillStyle = skyGrad;
             ctx.fillRect(0, 0, W, H - 70);
         }
 
         function drawStars() {
+            const t = themes[currentTheme];
             for (let s of stars) {
                 s.twinkle += s.speed;
-                const alpha = 0.3 + Math.sin(s.twinkle) * 0.3;
-                ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+                const alpha = 0.2 + Math.sin(s.twinkle) * 0.2;
+                ctx.fillStyle = `rgba(${t.starColor}, ${alpha})`;
                 ctx.beginPath();
                 ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
                 ctx.fill();
@@ -883,10 +1402,11 @@
         }
 
         function drawClouds() {
+            const t = themes[currentTheme];
             for (let c of clouds) {
                 if (gameState === 'PLAYING') c.x -= c.speed;
                 if (c.x + c.w < 0) { c.x = W + 20; c.y = 30 + Math.random() * 180; }
-                ctx.fillStyle = `rgba(255, 255, 255, ${c.opacity})`;
+                ctx.fillStyle = `rgba(${t.cloudColor}, ${c.opacity})`;
                 ctx.beginPath();
                 ctx.ellipse(c.x, c.y, c.w / 2, 15, 0, 0, Math.PI * 2);
                 ctx.fill();
@@ -900,34 +1420,29 @@
         }
 
         function drawGround() {
+            const t = themes[currentTheme];
             if (gameState === 'PLAYING') groundOffset = (groundOffset + pipes.dx) % 40;
 
-            // Ground gradient
             const gGrad = ctx.createLinearGradient(0, H - 70, 0, H);
-            gGrad.addColorStop(0, '#2d1b69');
-            gGrad.addColorStop(0.15, '#1a1a3e');
-            gGrad.addColorStop(1, '#0a0a1a');
+            t.ground.forEach((c, i) => gGrad.addColorStop(i / (t.ground.length - 1), c));
             ctx.fillStyle = gGrad;
             ctx.fillRect(0, H - 70, W, 70);
 
-            // Neon line
-            ctx.strokeStyle = 'rgba(123, 97, 255, 0.6)';
+            ctx.strokeStyle = t.groundLine;
             ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.moveTo(0, H - 70);
             ctx.lineTo(W, H - 70);
             ctx.stroke();
 
-            // Glow on ground line
-            ctx.strokeStyle = 'rgba(123, 97, 255, 0.15)';
+            ctx.strokeStyle = t.groundLineGlow;
             ctx.lineWidth = 8;
             ctx.beginPath();
             ctx.moveTo(0, H - 70);
             ctx.lineTo(W, H - 70);
             ctx.stroke();
 
-            // Grid lines on ground
-            ctx.strokeStyle = 'rgba(123, 97, 255, 0.08)';
+            ctx.strokeStyle = t.groundGrid;
             ctx.lineWidth = 1;
             for (let i = -groundOffset; i < W; i += 40) {
                 ctx.beginPath();
@@ -938,38 +1453,38 @@
         }
 
         function drawHUD() {
-            // Score
+            const t = themes[currentTheme];
             ctx.textAlign = 'center';
             ctx.font = 'bold 48px Orbitron';
-            ctx.fillStyle = 'rgba(255,255,255,0.9)';
-            ctx.shadowColor = 'rgba(0, 255, 200, 0.5)';
+            ctx.fillStyle = t.scoreColor;
+            ctx.shadowColor = t.scoreGlow;
             ctx.shadowBlur = 15;
             ctx.fillText(score, W / 2, 65);
             ctx.shadowBlur = 0;
 
-            // Speed bar
             const currentSpeed = Math.min(baseSpeed + (score * 0.12), 7.5);
             const speedPct = (currentSpeed - baseSpeed) / (7.5 - baseSpeed);
             const barX = W - 18, barY = 20, barH = 100, barW = 6;
-            ctx.fillStyle = 'rgba(255,255,255,0.1)';
+            ctx.fillStyle = t.speedBarBg;
             ctx.fillRect(barX, barY, barW, barH);
             const sGrad = ctx.createLinearGradient(0, barY + barH, 0, barY);
-            sGrad.addColorStop(0, '#00ffc8');
-            sGrad.addColorStop(1, '#ff6ec7');
+            sGrad.addColorStop(0, t.speedBarStart);
+            sGrad.addColorStop(1, t.speedBarEnd);
             ctx.fillStyle = sGrad;
             ctx.fillRect(barX, barY + barH * (1 - speedPct), barW, barH * speedPct);
-            ctx.font = '9px Orbitron';
-            ctx.fillStyle = 'rgba(255,255,255,0.4)';
+            ctx.font = '9px JetBrains Mono';
+            ctx.fillStyle = t.speedLabel;
             ctx.fillText('SPD', barX + 3, barY - 5);
         }
 
         function drawScorePopups() {
+            const t = themes[currentTheme];
             for (let i = scorePopups.length - 1; i >= 0; i--) {
                 let p = scorePopups[i];
                 p.y -= 1.5;
                 p.alpha -= 0.02;
                 ctx.font = 'bold 20px Orbitron';
-                ctx.fillStyle = `rgba(255, 215, 0, ${p.alpha})`;
+                ctx.fillStyle = `rgba(${t.particleScore}, ${p.alpha})`;
                 ctx.textAlign = 'center';
                 ctx.fillText(p.text, p.x, p.y);
                 if (p.alpha <= 0) scorePopups.splice(i, 1);
@@ -977,55 +1492,53 @@
         }
 
         function drawStartScreen() {
+            const t = themes[currentTheme];
             ctx.textAlign = 'center';
 
             ctx.font = 'bold 32px Orbitron';
-            ctx.fillStyle = 'rgba(255,255,255,0.85)';
-            ctx.shadowColor = 'rgba(123, 97, 255, 0.6)';
+            ctx.fillStyle = t.scoreColor;
+            ctx.shadowColor = t.scoreGlow;
             ctx.shadowBlur = 20;
-            ctx.fillText('READY?', W / 2, H / 2 - 30);
+            ctx.fillText(t.startText, W / 2, H / 2 - 30);
             ctx.shadowBlur = 0;
 
-            const pulse = 0.5 + Math.sin(frames * 0.06) * 0.3;
-            ctx.font = '14px Inter';
-            ctx.fillStyle = `rgba(255,255,255,${pulse})`;
-            ctx.fillText('TAP OR PRESS SPACE', W / 2, H / 2 + 10);
+            const pulse = 0.4 + Math.sin(frames * 0.06) * 0.3;
+            ctx.font = '14px JetBrains Mono';
+            ctx.fillStyle = `rgba(${t.starColor}, ${pulse})`;
+            ctx.fillText(t.startSubtext, W / 2, H / 2 + 10);
         }
 
         function drawGameOverScreen() {
-            // Overlay
-            ctx.fillStyle = 'rgba(10, 10, 26, 0.7)';
+            const t = themes[currentTheme];
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
             ctx.fillRect(0, 0, W, H);
 
             ctx.textAlign = 'center';
 
             ctx.font = 'bold 36px Orbitron';
-            ctx.fillStyle = '#ff6b7a';
-            ctx.shadowColor = 'rgba(255, 60, 80, 0.5)';
+            ctx.fillStyle = t.gameOverColor;
+            ctx.shadowColor = t.gameOverGlow;
             ctx.shadowBlur = 20;
-            ctx.fillText('GAME OVER', W / 2, H / 2 - 40);
+            ctx.fillText(t.gameOverText, W / 2, H / 2 - 40);
             ctx.shadowBlur = 0;
 
             ctx.font = 'bold 52px Orbitron';
-            ctx.fillStyle = '#00ffc8';
-            ctx.shadowColor = 'rgba(0, 255, 200, 0.4)';
+            ctx.fillStyle = t.scoreColor;
+            ctx.shadowColor = t.scoreGlow;
             ctx.shadowBlur = 15;
             ctx.fillText(score, W / 2, H / 2 + 20);
             ctx.shadowBlur = 0;
 
-            ctx.font = '12px Inter';
-            ctx.fillStyle = 'rgba(255,255,255,0.35)';
-            ctx.fillText('SCORE', W / 2, H / 2 + 40);
+            ctx.font = '12px JetBrains Mono';
+            ctx.fillStyle = `rgba(${t.starColor}, 0.4)`;
+            ctx.fillText(t.gameOverScoreLabel, W / 2, H / 2 + 40);
 
-            const pulse = 0.4 + Math.sin(frames * 0.06) * 0.3;
-            ctx.font = '14px Inter';
-            ctx.fillStyle = `rgba(255,255,255,${pulse})`;
-            ctx.fillText('TAP TO RETURN', W / 2, H / 2 + 80);
+            const pulse = 0.3 + Math.sin(frames * 0.06) * 0.3;
+            ctx.font = '14px JetBrains Mono';
+            ctx.fillStyle = `rgba(${t.starColor}, ${pulse})`;
+            ctx.fillText(t.gameOverRestart, W / 2, H / 2 + 80);
         }
 
-        // ============================
-        // GAME LOOP
-        // ============================
         function startGame() {
             showScreen('gameCanvas');
             gameState = 'START'; score = 0; bird.y = 260; bird.velocity = 0; bird.rotation = 0;
@@ -1041,7 +1554,7 @@
             shakeIntensity = 8;
             spawnDeathParticles();
 
-            if (authToken) {
+            if (authToken && !isGuest) {
                 try {
                     await fetch(`/api/score?score=${score}`, {
                         method: 'POST',
@@ -1057,7 +1570,6 @@
             if (document.getElementById('gameCanvas').style.display !== 'none') {
                 ctx.save();
 
-                // Screen shake
                 if (shakeTimer > 0) {
                     const sx = (Math.random() - 0.5) * shakeIntensity;
                     const sy = (Math.random() - 0.5) * shakeIntensity;
@@ -1091,9 +1603,6 @@
             requestAnimationFrame(loop);
         }
 
-        // ============================
-        // INPUT
-        // ============================
         document.addEventListener('keydown', (e) => {
             if (e.code === 'Space' && document.getElementById('gameCanvas').style.display !== 'none') {
                 e.preventDefault();
@@ -1107,17 +1616,14 @@
             else bird.flap();
         });
 
-        // Touch support
         canvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
             if (gameState === 'GAMEOVER') returnToMenu();
             else bird.flap();
         });
 
-        // ============================
-        // INIT
-        // ============================
-        if (authToken && username) loadMenu();
+        if (authToken && username && !isGuest) loadMenu();
+        else if (isGuest && username) loadMenu();
         else showScreen('login-screen');
         loop();
     </script>
